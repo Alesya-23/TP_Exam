@@ -1,0 +1,15 @@
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\obj\Debug\netcoreapp3.1\Database.AssemblyInfoInputs.cache
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\obj\Debug\netcoreapp3.1\Database.AssemblyInfo.cs
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\obj\Debug\netcoreapp3.1\Database.csproj.CoreCompileInputs.cache
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\bin\Debug\netcoreapp3.1\TPExamAuthumn.dll
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\obj\Debug\netcoreapp3.1\Database.csprojAssemblyReference.cache
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\bin\Debug\netcoreapp3.1\Database.deps.json
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\bin\Debug\netcoreapp3.1\Database.runtimeconfig.json
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\bin\Debug\netcoreapp3.1\Database.runtimeconfig.dev.json
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\bin\Debug\netcoreapp3.1\Database.dll
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\bin\Debug\netcoreapp3.1\Database.pdb
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\bin\Debug\netcoreapp3.1\TPExamAuthumn.pdb
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\obj\Debug\netcoreapp3.1\Database.csproj.CopyComplete
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\obj\Debug\netcoreapp3.1\Database.dll
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\obj\Debug\netcoreapp3.1\Database.pdb
+C:\Users\aleca\source\repos\TPExamAuthumn\Database\obj\Debug\netcoreapp3.1\Database.genruntimeconfig.cache
