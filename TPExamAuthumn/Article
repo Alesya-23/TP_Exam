@@ -1,0 +1,249 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using BussinesLogic.BindingModels;
+using BussinesLogic.Interfaces;
+using BussinesLogic.ViewModels;
+using DatabaseImplement.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace DatabaseImplement.Implements
+{
+    public class ArticleStorage : IArticleStorage
+    {
+        public List<ArticleViewModel> GetFullList()
+        {
+            using (var context = new Database())
+            {
+                return context.Articles.Include(rec => rec.Authors).Select(CreateModel).ToList();
+            }
+        }
+        public List<ArticleViewModel> GetFilteredList(ArticleBindingModel model)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+            using (var context = new Database())
+            {
+                return context.Articles.Include(rec => rec.Authors).Where(rec => (model.DateFrom.HasValue
+                    && model.DateTo.HasValue
+                    && rec.dateCreate >= model.DateFrom
+                    && rec.dateCreate <= model.DateTo))
+               .ToList().Select(CreateModel).ToList();
+            }
+        }
+        public ArticleViewModel GetElement(ArticleBindingModel model)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+            using (var context = new Database())
+            {
+                var article = context.Articles
+               .FirstOrDefault(rec => rec.name == model.name || rec.Id
+               == model.Id);
+                if (article == null) return null;
+                return CreateModel(article);
+            }
+        }
+        public void Insert(ArticleBindingModel model)
+        {
+            using (var context = new Database())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        
+                        CreateModel(model, new Article(), context);
+                        context.SaveChanges();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+        public void Update(ArticleBindingModel model)
+        {
+            using (var context = new Database())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var element = context.Articles.FirstOrDefault(rec => rec.Id ==
+                       model.Id);
+                        if (element == null)
+                        {
+                            throw new Exception("Элемент не найден");
+                        }
+                        CreateModel(model, element, context);
+                        context.SaveChanges();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+        public void Delete(ArticleBindingModel model)
+        {
+            using (var context = new Database())
+            {
+                Article element = context.Articles.FirstOrDefault(rec => rec.Id ==
+               model.Id);
+                if (element != null)
+                {
+                    context.Articles.Remove(element);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Элемент не найден");
+                }
+            }
+        }
+
+        private void CreateModel(ArticleBindingModel model, Article article, Database context)
+        {
+            article.name = model.name;
+            article.theme = model.theme;
+            article.dateCreate = model.dateCreate;
+            context.SaveChanges();
+        }
+
+        private ArticleViewModel CreateModel(Article Article)
+        {
+            Dictionary<int, (string, string, DateTime)> dict = new Dictionary<int, (string, string, DateTime)>();
+            Article.Authors.ForEach(rec => dict.Add((int)rec.Id, (rec.fio.ToString(), rec.work, rec.dateBithday)));
+            return new ArticleViewModel
+            {
+                Id = (int)Article.Id,
+                name = Article.name,
+                theme = Article.theme,
+                Authors = dict,
+                dateCreate = Article.dateCreate
+            };
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+using BusinessLogic.BindingModels;
+using BusinessLogic.HelperModels;
+using BusinessLogic.ViewModels;
+using BussinesLogic.BindingModels;
+using BussinesLogic.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization.Json;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BusinessLogic.BussinessLogics
+{
+    public class ReportLogic
+    {
+        private readonly IArticleStorage _ArticleStorage;
+        public ReportLogic(IArticleStorage article)
+        {
+            _ArticleStorage = article;
+        }
+
+        /// <summary>
+        /// Получение списка авторов определенный период
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public List<ReportAuthorsViewModel> GetAuthors(ArticleBindingModel model)
+        {
+            var Article = _ArticleStorage.GetFilteredList(model);
+            var list = new List<ReportAuthorsViewModel>();
+            foreach (var rec in Article)
+            {
+                if (!(model.DateFrom < rec.dateCreate && rec.dateCreate < model.DateTo))
+                    continue;
+                var record = new ReportAuthorsViewModel
+                {
+                    ArticleId = (int)rec.Id,
+                    ArticleName = rec.name,
+                    DateCreate = rec.dateCreate
+                };
+                foreach (var auth in rec.Authors) {
+
+                    record.AuthorId = auth.Key;
+                    record.AuthorName = auth.Value.Item1;
+                    record.dateBithday = auth.Value.Item3;
+                    record.work = auth.Value.Item2;
+                list.Add(record);
+                }
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Сохранение авторов в файл-Pdf
+        /// </summary>
+        /// <param name="model"></param>
+        /// 
+        //ассинхронность охранеине файла
+        public async void SaveAuthorsToPdfFile(ReportBindingModel model)
+        {
+            await Task.Run(() =>
+            {
+                SaveToPdf.CreateDoc(new PdfInfo
+                {
+                    FileName = model.FileName,
+                    Title = "Список авторов",
+                    DateFrom = model.DateFrom.Value,
+                    DateTo = model.DateTo.Value,
+                   // Authors = GetAuthors(model)
+                });
+            });
+        }
+
+        //сериализация
+        public  async void SaveJSONDataContractPDF(ArticleBindingModel model) {
+            await Task.Run(() =>
+            {
+                //cоздаем объект, затем открываем поток для заиси сериал. объекта
+                DataContractJsonSerializer formatter =
+                    new DataContractJsonSerializer(typeof(List<ReportAuthorsBindingModel>));
+                using (FileStream fs = new FileStream(@"C:\Destctop\Report.json", FileMode.OpenOrCreate))
+                {
+                    formatter.WriteObject(fs, GetAuthors(model));
+                }
+            });
+        }
+    }
+}
+
