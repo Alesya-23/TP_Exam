@@ -10,7 +10,7 @@ namespace TPExamAuthumn.BindingModel
         public int DishId { get; set; }
         public string name { get; set; }
         public int count { get; set; }
-        public DateTime dateSupplier{ get; set; }
+        public DateTime dateSupplier { get; set; }
         public string placeMade { get; set; }
     }
 }

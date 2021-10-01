@@ -9,3 +9,9 @@ C:\Users\aleca\source\repos\TPExamAuthumn\TPExamAuthumn\obj\Debug\netcoreapp3.1\
 C:\Users\aleca\source\repos\TPExamAuthumn\TPExamAuthumn\bin\Debug\netcoreapp3.1\TPExamAuthumn.runtimeconfig.json
 C:\Users\aleca\source\repos\TPExamAuthumn\TPExamAuthumn\bin\Debug\netcoreapp3.1\TPExamAuthumn.runtimeconfig.dev.json
 C:\Users\aleca\source\repos\TPExamAuthumn\TPExamAuthumn\obj\Debug\netcoreapp3.1\TPExamAuthumn.genruntimeconfig.cache
+C:\Users\aleca\source\repos\TP_Exam\TPExamAuthumn\TPExamAuthumn\obj\Debug\netcoreapp3.1\TPExamAuthumn.csprojAssemblyReference.cache
+C:\Users\aleca\source\repos\TP_Exam\TPExamAuthumn\TPExamAuthumn\obj\Debug\netcoreapp3.1\TPExamAuthumn.AssemblyInfoInputs.cache
+C:\Users\aleca\source\repos\TP_Exam\TPExamAuthumn\TPExamAuthumn\obj\Debug\netcoreapp3.1\TPExamAuthumn.AssemblyInfo.cs
+C:\Users\aleca\source\repos\TP_Exam\TPExamAuthumn\TPExamAuthumn\obj\Debug\netcoreapp3.1\TPExamAuthumn.csproj.CoreCompileInputs.cache
+C:\Users\aleca\source\repos\TP_Exam\TPExamAuthumn\TPExamAuthumn\obj\Debug\netcoreapp3.1\TPExamAuthumn.dll
+C:\Users\aleca\source\repos\TP_Exam\TPExamAuthumn\TPExamAuthumn\obj\Debug\netcoreapp3.1\TPExamAuthumn.pdb
